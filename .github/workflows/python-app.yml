@@ -23,7 +23,7 @@ jobs:
 
     - shell: bash
       run: |
-        sed -i -e "s/SECRET_KEY/${{ secrets.SuperSecret }}/g" currency_converter.config
+        sed -i -e "s/SECRET_KEY/${{ secrets.API_KEY }}/g" currency_converter.config
   
     - name: Install dependencies
       run: |
