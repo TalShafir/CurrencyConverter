@@ -1,7 +1,9 @@
 import argparse
 import sys
+from configparser import ConfigParser
 
 from input_file_parser import InputFileParser
+from currency_converter_service import CurrencyConverterService
 
 
 def parse_args(argv):
@@ -17,24 +19,18 @@ def parse_args(argv):
     return parser.parse_args(argv)
 
 
-def main(argv=None, input_file_parser=None):
+def main(argv=None, input_file_parser_service=None, converter_service=None):
     args = parse_args(argv)
-    src_currency, target_currency, values = input_file_parser.parse(args.input_file)
+    src_currency, target_currency, values = input_file_parser_service.parse(args.input_file)
     for value in values:
-        print(convert(src_currency, target_currency, value))
-
-
-def convert(src_currency: str, target_currency: str, value: str) -> float:
-    """
-    Converts the value in src_currency to its converted value as target_currency
-    :param src_currency: str representing the src_currency
-    :param target_currency: str representing the target_currency
-    :param value: the value to be converted as str
-    :return: the converted value as float
-    """
-    raise NotImplementedError()
+        print(converter_service.convert(src_currency, target_currency, value))
 
 
 if __name__ == '__main__':
     input_file_parser = InputFileParser()
-    main(argv=sys.argv[1:], input_file_parser=input_file_parser)
+
+    config = ConfigParser()
+    config.read('currency_converter.config')
+    converter_service = CurrencyConverterService(api_key=config['AUTH']['api_key'],
+                                                 api_endpoint_address=config['AUTH']['api_endpoint_address'])
+    main(argv=sys.argv[1:], input_file_parser_service=input_file_parser, converter_service=converter_service)
