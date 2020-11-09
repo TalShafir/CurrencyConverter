@@ -4,6 +4,8 @@ import sys
 from input_file_parser import InputFileParser
 from currency_converter_service import CurrencyConverterServiceFactory
 
+_INPUT_FILE_HELP = "file that contains source and target currencies and a list of values, all separated by nextline"
+
 
 def parse_args(argv):
     """
@@ -12,8 +14,8 @@ def parse_args(argv):
     :return: Namespace object containing the parsed argv
     """
     parser = argparse.ArgumentParser(description="Tool to convert currency")
-    parser.add_argument("-f", "--input-file", type=str,
-                        help="input file that contains source currency, target currency and a list of values, all seperated by nextline")
+
+    parser.add_argument("-f", "--input-file", type=str, help=_INPUT_FILE_HELP)
 
     return parser.parse_args(argv)
 
