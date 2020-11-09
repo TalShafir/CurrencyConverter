@@ -1,6 +1,8 @@
 import argparse
 import sys
 
+from input_file_parser import InputFileParser
+
 
 def parse_args(argv):
     """
@@ -15,15 +17,11 @@ def parse_args(argv):
     return parser.parse_args(argv)
 
 
-def main(argv=None):
+def main(argv=None, input_file_parser=None):
     args = parse_args(argv)
-    with open(args.input_file, 'r') as input_file:
-        # load currencies
-        src_currency, target_currency = next(input_file), next(input_file)
-
-        # run for all the values
-        for value in input_file:
-            print(convert(src_currency, target_currency, value))
+    src_currency, target_currency, values = input_file_parser.parse(args.input_file)
+    for value in values:
+        print(convert(src_currency, target_currency, value))
 
 
 def convert(src_currency: str, target_currency: str, value: str) -> float:
@@ -37,15 +35,6 @@ def convert(src_currency: str, target_currency: str, value: str) -> float:
     raise NotImplementedError()
 
 
-class InputFileParser:
-    def __init__(self, file_path):
-        self.file_path = file_path
-        with open(self.file_path, 'r') as input_file:
-            # load currencies
-            self.src_currency, self.target_currency = next(input_file), next(input_file)
-            self.values = list(input_file)
-
-
-
 if __name__ == '__main__':
-    main(sys.argv[1:])
+    input_file_parser = InputFileParser()
+    main(argv=sys.argv[1:], input_file_parser=input_file_parser)
