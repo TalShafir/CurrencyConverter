@@ -28,6 +28,6 @@ class InputFileParser:
             src_currency, target_currency = next(input_file), next(input_file)
             # load values
             values = list(map(float, filter(lambda val: val, input_file)))
-            return ParsedInput(src_currency=src_currency.strip(),
-                               target_currency=target_currency.strip(),
+            return ParsedInput(src_currency=src_currency.strip().upper(),
+                               target_currency=target_currency.strip().upper(),
                                values=values)
