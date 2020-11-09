@@ -33,4 +33,5 @@ if __name__ == '__main__':
     config.read('currency_converter.config')
     converter_service = CurrencyConverterService(api_key=config['AUTH']['api_key'],
                                                  api_endpoint_address=config['AUTH']['api_endpoint_address'])
+
     main(argv=sys.argv[1:], input_file_parser_service=input_file_parser, converter_service=converter_service)
