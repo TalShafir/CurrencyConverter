@@ -37,5 +37,15 @@ def convert(src_currency: str, target_currency: str, value: str) -> float:
     raise NotImplementedError()
 
 
+class InputFileParser:
+    def __init__(self, file_path):
+        self.file_path = file_path
+        with open(self.file_path, 'r') as input_file:
+            # load currencies
+            self.src_currency, self.target_currency = next(input_file), next(input_file)
+            self.values = list(input_file)
+
+
+
 if __name__ == '__main__':
     main(sys.argv[1:])
