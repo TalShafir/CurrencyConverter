@@ -7,7 +7,14 @@ from currency_converter import currency_converter
 
 
 class TestCurrencyConverter(unittest.TestCase):
+    """
+    Tests for the whole conversion process
+    """
+
     def test_currency_converter(self):
+        """
+        Test the conversion process with a 'normal' case
+        """
         _TEST_INPUT_FILE = """USD
                                ILS
                                1
@@ -20,6 +27,9 @@ class TestCurrencyConverter(unittest.TestCase):
             self.assertEqual(converted_values, [3.5, 17.5, 36.75])
 
     def test_no_values(self):
+        """
+        Test the conversion process with no values to convert
+        """
         _TEST_INPUT_FILE = """USD
                                ILS"""
         with patch("builtins.open", mock_open(read_data=_TEST_INPUT_FILE)):
@@ -30,6 +40,10 @@ class TestCurrencyConverter(unittest.TestCase):
 
 
 class MockCurrencyConverterService(CurrencyConverterService):
+    """
+    A class that mocks for CurrencyConverterService
+    """
+
     def convert(self, source_currency: str, target_currency: str, value: float) -> float:
         _MOCK_CURRENCIES = {
             ('USD', 'ILS'): 3.5,
