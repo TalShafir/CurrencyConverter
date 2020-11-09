@@ -1,3 +1,6 @@
+from configparser import ConfigParser
+import os
+
 import requests
 
 
@@ -5,6 +8,7 @@ class CurrencyConverterService:
     """
     Service that handles the requests to the currency converter API
     """
+
     def __init__(self, api_key, api_endpoint_address):
         """
 
@@ -44,3 +48,20 @@ class CurrencyConverterService:
         :return: the conversion string
         """
         return source_currency.upper() + '_' + target_currency.upper()
+
+
+class CurrencyConverterServiceFactory:
+    @staticmethod
+    def from_config_file(file_path: str) -> CurrencyConverterService:
+        config = ConfigParser()
+        config.read(file_path)
+        # validate config
+        if 'AUTH' not in config.sections():
+            raise Exception("The config file doesn't contain 'AUTH' section")
+
+        if not ('api_key' in config['AUTH'] and 'api_endpoint_address' in config['AUTH']):
+            raise Exception("The config file doesn't contain 'api_key' or 'api_endpoint_address' in 'AUTH' section")
+
+        converter_service = CurrencyConverterService(api_key=config['AUTH']['api_key'],
+                                                     api_endpoint_address=config['AUTH']['api_endpoint_address'])
+        return converter_service

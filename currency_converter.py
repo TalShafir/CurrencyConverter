@@ -1,9 +1,8 @@
 import argparse
 import sys
-from configparser import ConfigParser
 
 from input_file_parser import InputFileParser
-from currency_converter_service import CurrencyConverterService
+from currency_converter_service import CurrencyConverterServiceFactory
 
 
 def parse_args(argv):
@@ -28,10 +27,6 @@ def main(argv=None, input_file_parser_service=None, converter_service=None):
 
 if __name__ == '__main__':
     input_file_parser = InputFileParser()
-
-    config = ConfigParser()
-    config.read('currency_converter.config')
-    converter_service = CurrencyConverterService(api_key=config['AUTH']['api_key'],
-                                                 api_endpoint_address=config['AUTH']['api_endpoint_address'])
+    converter_service = CurrencyConverterServiceFactory.from_config_file('currency_converter.config')
 
     main(argv=sys.argv[1:], input_file_parser_service=input_file_parser, converter_service=converter_service)
