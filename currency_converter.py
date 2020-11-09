@@ -18,15 +18,21 @@ def parse_args(argv):
     return parser.parse_args(argv)
 
 
-def main(argv=None, input_file_parser_service=None, converter_service=None):
+def currency_converter(input_file, input_file_parser_service=None, converter_service=None):
+    src_currency, target_currency, values = input_file_parser_service.parse(input_file)
+    converted_values = [converter_service.convert(src_currency, target_currency, value) for value in values]
+    return converted_values
+
+
+def main(argv):
     args = parse_args(argv)
-    src_currency, target_currency, values = input_file_parser_service.parse(args.input_file)
-    for value in values:
-        print(converter_service.convert(src_currency, target_currency, value))
-
-
-if __name__ == '__main__':
     input_file_parser = InputFileParser()
     converter_service = CurrencyConverterServiceFactory.from_config_file('currency_converter.config')
 
-    main(argv=sys.argv[1:], input_file_parser_service=input_file_parser, converter_service=converter_service)
+    print('\n'.join(currency_converter(input_file=args.input_file,
+                                       input_file_parser_service=input_file_parser,
+                                       converter_service=converter_service)))
+
+
+if __name__ == '__main__':
+    main(argv=sys.argv[1:])
