@@ -3,7 +3,6 @@ from unittest.mock import patch, mock_open
 import sys
 
 from currency_converter_service import CurrencyConverterService
-from input_file_parser import InputFileParser
 from currency_converter import currency_converter, Container
 
 
